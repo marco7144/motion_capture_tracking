@@ -60,6 +60,11 @@ int main(int argc, char **argv)
   auto node = rclcpp::Node::make_shared("motion_capture_tracking_node");
   node->declare_parameter<std::string>("type", "vicon");
   node->declare_parameter<std::string>("hostname", "localhost");
+  node->declare_parameter<std::string>("interface_ip", "0.0.0.0");
+  node->declare_parameter<int>("port_command", 1510);
+  node->declare_parameter<int>("legacy_data_port", 1511);
+  node->declare_parameter<bool>("legacy_multicast", true);
+  node->declare_parameter<std::string>("legacy_multicast_address", "239.255.42.99");
   node->declare_parameter<std::string>("topics.frame_id", "world");
   node->declare_parameter<std::string>("topics.header_time", "ros");
   node->declare_parameter<uint8_t>("topics.poses.version", 1);
@@ -90,6 +95,11 @@ int main(int argc, char **argv)
   // Make a new client
   std::map<std::string, std::string> cfg;
   cfg["hostname"] = motionCaptureHostname;
+  cfg["interface_ip"] = node->get_parameter("interface_ip").as_string();
+  cfg["port_command"] = std::to_string(node->get_parameter("port_command").as_int());
+  cfg["legacy_data_port"] = std::to_string(node->get_parameter("legacy_data_port").as_int());
+  cfg["legacy_multicast"] = node->get_parameter("legacy_multicast").as_bool() ? "true" : "false";
+  cfg["legacy_multicast_address"] = node->get_parameter("legacy_multicast_address").as_string();
 
   // if the mock type is selected, add the defined rigid bodies
   if (motionCaptureType == "mock") {

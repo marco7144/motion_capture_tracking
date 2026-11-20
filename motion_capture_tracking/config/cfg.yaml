@@ -4,6 +4,11 @@
     type: "optitrack"
     # Specify the hostname or IP of the computer running the motion capture software
     hostname: "130.149.82.37"
+    # NatNet 2.x does not report the data transport settings to clients.
+    # These values are used only for NatNet versions below 3.0.
+    legacy_data_port: 1511
+    legacy_multicast: false # set false when Motive streams using Unicast
+    legacy_multicast_address: "239.255.42.99"
 
     # The information will always be broadcasted via tf2
     # Specify additional settings for the /poses topic here
